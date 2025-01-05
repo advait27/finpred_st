@@ -133,34 +133,34 @@ if ticker:
                 ax.legend()
                 st.pyplot(fig)
 
-            # Sentiment Analysis
-            st.write("### Sentiment Analysis")
-            try:
-                news = fetch_news(ticker)
-                sentiments = []
-                for article in news:
-                    title = article['title']
-                    sentiment_score = analyze_sentiment(title)
-                    sentiments.append({'Title': title, 'Sentiment': sentiment_score})
+            # # Sentiment Analysis
+            # st.write("### Sentiment Analysis")
+            # try:
+            #     news = fetch_news(ticker)
+            #     sentiments = []
+            #     for article in news:
+            #         title = article['title']
+            #         sentiment_score = analyze_sentiment(title)
+            #         sentiments.append({'Title': title, 'Sentiment': sentiment_score})
 
-                # Convert to DataFrame
-                sentiment_df = pd.DataFrame(sentiments)
-                st.write("Recent News and Sentiment Scores")
-                st.dataframe(sentiment_df)
+            #     # Convert to DataFrame
+            #     sentiment_df = pd.DataFrame(sentiments)
+            #     st.write("Recent News and Sentiment Scores")
+            #     st.dataframe(sentiment_df)
 
-                # Aggregate Sentiment
-                avg_sentiment = sentiment_df['Sentiment'].mean()
-                st.write(f"**Average Sentiment Score:** {avg_sentiment:.2f}")
+            #     # Aggregate Sentiment
+            #     avg_sentiment = sentiment_df['Sentiment'].mean()
+            #     st.write(f"**Average Sentiment Score:** {avg_sentiment:.2f}")
 
-                if avg_sentiment > 0:
-                    st.success("Overall Sentiment: Positive 😊")
-                elif avg_sentiment < 0:
-                    st.error("Overall Sentiment: Negative 😔")
-                else:
-                    st.info("Overall Sentiment: Neutral 😐")
+            #     if avg_sentiment > 0:
+            #         st.success("Overall Sentiment: Positive 😊")
+            #     elif avg_sentiment < 0:
+            #         st.error("Overall Sentiment: Negative 😔")
+            #     else:
+            #         st.info("Overall Sentiment: Neutral 😐")
 
-            except Exception as e:
-                st.error(f"Error fetching or analyzing sentiment: {e}")
+            # except Exception as e:
+            #     st.error(f"Error fetching or analyzing sentiment: {e}")
 
     except Exception as e:
         st.error(f"Error fetching data for {ticker.upper()}: {e}")
