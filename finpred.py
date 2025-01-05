@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from newsapi import NewsApiClient
+# from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+# from newsapi import NewsApiClient
 
 # Streamlit App Configuration
 st.set_page_config(page_title="Stock Analysis", layout="wide")
