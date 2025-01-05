@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 st.set_page_config(page_title="Stock Analysis", layout="wide")
 
 # Streamlit App Title
-st.title("Stock Analysis and Prediction App")
+st.title("Stock Analysis and Market Predictions")
 
 # User Input for Stock Ticker
 ticker = st.text_input("Enter Stock Ticker (e.g., AAPL, TSLA, RELIANCE.NS):")
