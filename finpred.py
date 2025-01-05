@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from newsapi import NewsApiClient
 
 # Streamlit App Configuration
 st.set_page_config(page_title="Stock Analysis", layout="wide")
 
 # Streamlit App Title
-st.title("Stock Analysis and Market Predictions")
+st.title("Stock Analysis and Prediction App")
 
 # User Input for Stock Ticker
 ticker = st.text_input("Enter Stock Ticker (e.g., AAPL, TSLA, RELIANCE.NS):")
@@ -21,11 +23,26 @@ st.sidebar.header("Customize Date Range")
 start_date = st.sidebar.date_input("Start Date", value=pd.Timestamp('2023-01-01'))
 end_date = st.sidebar.date_input("End Date", value=pd.Timestamp('2023-12-31'))
 
+# News API Client
+newsapi = NewsApiClient(api_key='YOUR_NEWSAPI_KEY')
+
 # Fetch Stock Data
 def fetch_stock_data(ticker, start_date, end_date):
     stock = yf.Ticker(ticker)
     data = stock.history(start=start_date, end=end_date)
     return data
+
+# Fetch News
+def fetch_news(ticker):
+    query = ticker
+    articles = newsapi.get_everything(q=query, language='en', sort_by='relevance', page_size=5)
+    return articles['articles']
+
+# Analyze Sentiment
+def analyze_sentiment(text):
+    analyzer = SentimentIntensityAnalyzer()
+    sentiment = analyzer.polarity_scores(text)
+    return sentiment['compound']
 
 if ticker:
     # Check for Indian Stock Ticker Suffix
@@ -115,6 +132,35 @@ if ticker:
                 ax.plot(future_df['Day'], future_df['Predicted Price'], label='Predicted Prices', linestyle='--')
                 ax.legend()
                 st.pyplot(fig)
+
+            # Sentiment Analysis
+            st.write("### Sentiment Analysis")
+            try:
+                news = fetch_news(ticker)
+                sentiments = []
+                for article in news:
+                    title = article['title']
+                    sentiment_score = analyze_sentiment(title)
+                    sentiments.append({'Title': title, 'Sentiment': sentiment_score})
+
+                # Convert to DataFrame
+                sentiment_df = pd.DataFrame(sentiments)
+                st.write("Recent News and Sentiment Scores")
+                st.dataframe(sentiment_df)
+
+                # Aggregate Sentiment
+                avg_sentiment = sentiment_df['Sentiment'].mean()
+                st.write(f"**Average Sentiment Score:** {avg_sentiment:.2f}")
+
+                if avg_sentiment > 0:
+                    st.success("Overall Sentiment: Positive 😊")
+                elif avg_sentiment < 0:
+                    st.error("Overall Sentiment: Negative 😔")
+                else:
+                    st.info("Overall Sentiment: Neutral 😐")
+
+            except Exception as e:
+                st.error(f"Error fetching or analyzing sentiment: {e}")
 
     except Exception as e:
         st.error(f"Error fetching data for {ticker.upper()}: {e}")
