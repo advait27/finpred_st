@@ -24,7 +24,7 @@ start_date = st.sidebar.date_input("Start Date", value=pd.Timestamp('2023-01-01'
 end_date = st.sidebar.date_input("End Date", value=pd.Timestamp('2023-12-31'))
 
 # News API Client
-newsapi = NewsApiClient(api_key='YOUR_NEWSAPI_KEY')
+# newsapi = NewsApiClient(api_key='YOUR_NEWSAPI_KEY')
 
 # Fetch Stock Data
 def fetch_stock_data(ticker, start_date, end_date):
