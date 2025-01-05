@@ -15,6 +15,3 @@ openpyxl
 xlrd
 tensorflow
 keras
-vaderSentiment
-newsapi
-NewsApiClient
