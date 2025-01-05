@@ -17,3 +17,4 @@ tensorflow
 keras
 vaderSentiment
 newsapi
+NewsApiClient
